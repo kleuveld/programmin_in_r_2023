@@ -1,3 +1,8 @@
+#this is the "cheat" file containing functions
+#used in exercises
+#I loaded it in R by typing source("answers.R")
+#authour: koen leuveld
+
 highlight <- function(content,wrapper){
   answer <- c(wrapper,content,wrapper)
   return(answer)

@@ -1,5 +1,6 @@
-#functions have a scope
+#continue lesson 2
 
+#functions have a scope
 input <- 86
 
 add_two <- function(input){
@@ -7,22 +8,29 @@ add_two <- function(input){
   return(output)
 }
 
+#returns 7
 add_two(5)
+
+#input remains unchanged
 input
 
+#a function to learn about testing
 center <- function(data, midpoint){
   new_data <- (data - mean(data)) + midpoint
   return(new_data)
 }
 
+#this seems to work:
 quick_testdata <- c(0,0,0,0)
 center(quick_testdata,86)
 
+#now on real data:
 dat <- read.csv(file = "data/inflammation-01.csv",header=FALSE)
 
 centered <- center(dat[,4],0)
 centered
 
+#more checks:
 mean(dat[,4])
 mean(centered)
 
@@ -35,12 +43,13 @@ all.equal(sd(dat[,4]),sd(centered))
 
 
 
-#missing values
+#missing values are dangerous:
 datNA <- dat
 datNA[10,4] <- NA
 
 center(datNA[,4],0)
 
+#now with documentation
 center <- function(data, midpoint){
   #function that returns a new vector containing the original
   #data centered around midpoint
@@ -69,12 +78,7 @@ plot(max_day_inflammation)
 min_day_inflammation <- apply(dat,2,min)
 plot(min_day_inflammation)
 
-
-
-
-
-
-
+#and we put it into a function
 analyze <- function(filename){
   #function to produce plots of mean,min and max over time
   #takes a filename (csv) as argument
@@ -90,6 +94,7 @@ analyze <- function(filename){
   plot(min_day_inflammation)
 }
 
+#how cool is this?!
 analyze("data/inflammation-07.csv")
 
 
@@ -98,6 +103,7 @@ analyze("data/inflammation-07.csv")
 
 best_practice <- c("Let", "the", "computer", "do", "the", "work")
 
+#the worst way you can do this:
 print_words <- function(sentence){
   print(sentence[1])
   print(sentence[2])
@@ -111,7 +117,7 @@ print_words(best_practice)
 
 print_words(best_practice[-6])
 
-#loop
+#doing it with a loop:
 print_words <- function(sentence){
   for (word in sentence){
     print(word)
@@ -122,6 +128,7 @@ print_words(best_practice)
 print_words(best_practice[-6])
 
 
+#updating a counter with a loop
 len <- 0
 vowels <- c("a","e","i","o","u","y")
 
@@ -131,6 +138,7 @@ for (v in vowels){
 len
 
 
+#excercise
 seq(86)
 print_N(3)
 
@@ -165,6 +173,7 @@ total <- function(vec){
 }
 
 
+#we can get a vector of a bunch of filenames
 list.files(path = "data",pattern="csv")
 list.files(path="data" , pattern = "inflammation")
 list.files(path="data" , pattern = "inflammation",full.names = TRUE)
@@ -182,6 +191,7 @@ for (f in filenames){
 }
 
 
+#using a function to loop over a bunch of files
 analyze_all <- function(folder = "data", pattern){
   filenames <- list.files(path = folder,
                           pattern = pattern,
@@ -196,7 +206,7 @@ analyze_all <- function(folder = "data", pattern){
 
 analyze_all(folder = "data",pattern = "inflammation")
 
-#making choices
+#Lesson 4: making choices
 
 #exporting to pdf
 pdf("inflammation-01and2.pdf")
@@ -270,12 +280,16 @@ plot_dist <- function(x,threshold){
 plot_dist(dat[,10],threshold = 10)
 
 
-
+#now we can specify output
 analyze <- function(filename,output=NULL){
   #function to produce plots of mean,min and max over time
   #takes a filename (csv) as argument
   
+  #the ! means not
+  #is.null returns true if something is empty
+  
   if(!is.null(output)){
+    #so if output is not empty...
     pdf(output)
   }
   
@@ -290,6 +304,7 @@ analyze <- function(filename,output=NULL){
   min_day_inflammation <- apply(dat,2,min)
   plot(min_day_inflammation)
   
+  #again run something is output is not empty
   if (!is.null(output)){
     dev.off()
   }
@@ -297,10 +312,12 @@ analyze <- function(filename,output=NULL){
 
 
 
-
+#does it work? YES
 analyze("data/inflammation-03.csv",
         "inflammation-03.pdf")
 
+
+#now make sure analyze all can nicely output:
 dir.create("results")
 
 
